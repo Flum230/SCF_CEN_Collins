@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desh Bagley Draw & Chat PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#317EFB"/>
+    <link rel="apple-touch-icon" href="DeshCapstone.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="drawing-section">
+            <canvas id="drawingCanvas"></canvas>
+            <div class="drawing-controls">
+                <input type="color" id="colorPicker" value="#000000">
+                <button id="clearCanvas">Clear the Canvas</button>
+                <button id="downloadDrawing">Download Drawing</button>
+            </div>
+        </div>
+        <div class="messaging-section">
+            <div id="messageHistory"></div>
+            <div class="message-input">
+                <textarea id="messageInput" placeholder="Type your message..."></textarea>
+                <button id="sendMessage">Send</button>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
