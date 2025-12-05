@@ -7,7 +7,7 @@ const ASSETS_TO_CACHE = [
     '/app.js',
     '/manifest.json',
     '/offline-page.html',
-    '/DeshCapstone.png'
+    '/NoahCapstone.png'
  
 ];
 
@@ -86,7 +86,7 @@ self.addEventListener('sync', (event) => {
 self.addEventListener('push', (event) => {
     const options = {
         body: event.data ? event.data.text() : 'New message received',
-        icon: '/DeshCapstone.png',
+        icon: '/NoahCapstone.png',
         badge: '/icons/icon-72x72.png',
         vibrate: [100, 50, 100],
         data: {
@@ -106,7 +106,7 @@ self.addEventListener('push', (event) => {
     };
 
     event.waitUntil(
-        self.registration.showNotification('DeshDrawChat', options)
+        self.registration.showNotification('NoahDrawChat', options)
     );
 });
 
@@ -134,15 +134,58 @@ async function syncMessages() {
 }
 
 // Helper functions for IndexedDB operations
+
+const DB_NAME = 'MessageQueue';
+const DB_VERSION = 1;
+const STORE_NAME = 'messages';
+
 async function getQueuedMessages() {
-    // Implementation would go here
-    return [];
+    return new Promise((resolve) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onsuccess = (event) => {
+            const db = event.target.result;
+            const transaction = db.transaction(STORE_NAME, 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const getAllRequest = store.getAll();
+
+            getAllRequest.onsuccess = () => {
+                resolve(getAllRequest.result || []);
+            };
+        };
+        request.onerror = () => resolve([]);
+    });
 }
 
 async function sendMessage(message) {
-    // Implementation would go here
+    try {
+        const response = await fetch('/api/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(message)
+        });
+        if (!response.ok) throw new Error('Failed to send');
+        return await response.json();
+    } catch (error) {
+        console.warn('Message sync failed:', error);
+        throw error;
+    }
 }
 
 async function clearQueuedMessages() {
-    // Implementation would go here
+    return new Promise((resolve) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onsuccess = (event) => {
+            const db = event.target.result;
+            const transaction = db.transaction(STORE_NAME, 'readwrite');
+            const store = transaction.objectstore(STORE_NAME);
+            const clearRequest = store.clear();
+
+            clearRequest.onsuccess = () => resolve();
+            clearRequest.onerror = () => resolve();
+        };
+
+        request.onerror = () => resolve();
+    });
 }

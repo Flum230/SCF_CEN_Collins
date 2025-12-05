@@ -3,7 +3,7 @@ class PWAManager {
     static async initialize() {
         if ('serviceWorker' in navigator) {
             try {
-                const registration = await navigator.serviceWorker.register('/service-worker.js');
+                const registration = await navigator.serviceWorker.register('service-worker.js');
                 console.log('ServiceWorker registration successful:', registration);
                 
                 // Set up push notifications
@@ -32,7 +32,7 @@ class UIManager {
         // Add app shell elements
         document.body.innerHTML = `
             <div class="app-header">
-                <h1>DeshDrawChat</h1>
+                <h1>NoahDrawChat</h1>
                 <div class="connection-status" id="connectionStatus"></div>
                 <button id="installPWA" class="hidden">Install App</button>
             </div>
@@ -234,7 +234,7 @@ class MessagingApp {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer API-KEY-HERE`
+                    'Authorization': `Bearer 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`
                 },
                 body: JSON.stringify({
                     model: "gpt-4o-mini",

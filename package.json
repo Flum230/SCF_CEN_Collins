@@ -2,10 +2,9 @@
     "name": "your-project-name",
     "version": "1.0.0",
     "scripts": {
-      "build": "deno run -A build.ts"
+        "build": "deno run -A build.ts"
     },
     "dependencies": {
-        
+        "openai": "^6.10.0"
     }
-  }
-  
+}
